@@ -2,25 +2,18 @@
 const discord = require("discord.js");
 const client = new discord.Client();
 const config = require("./config.json");
+const stockTools = require("./stockTools.js");
+
 //登入通知(顯示於下方小黑框)
 client.on("ready", () => {
     console.log(`成功登入囉!${client.user.tag}`);
 });
 
 // Create an event listener for messages
-client.on('message', message => {
-    // If the message is "ping"
-    if (message.content === 'ping') {
-        // Send "pong" to the same channel
-        message.channel.send('pong');
-    }
-});
-// Create an event listener for messages
-client.on('message', message => {
-    // If the message is "what is my avatar"
-    if (message.content === 'what is my avatar') {
-        // Send the user's avatar URL
-        message.reply(message.author.displayAvatarURL());
+client.on('message', async message => {
+    if (message.content === '/stock') {
+        const stock = await stockTools.getStock("2330");
+        message.channel.send(stock);
     }
 });
 
