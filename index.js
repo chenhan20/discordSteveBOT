@@ -11,9 +11,21 @@ client.on("ready", () => {
 
 // Create an event listener for messages
 client.on('message', async message => {
-    if (message.content === '/stock') {
-        const stock = await stockTools.getStock("2330");
-        message.channel.send(stock);
+    console.log(message.content);
+    switch (message.content.substr(0, 1)) {
+        case 'S':
+            const stockNumber = message.content.substr(1);
+            if (stockNumber.length >= 4) {
+                const stock = await stockTools.getStock(stockNumber);
+                if (stock != undefined) {
+                    message.channel.send(stockTools.convertStock(stock));
+                } else {
+                    message.channel.send("查無資料");
+                }
+            }
+            break;
+        default:
+            return;
     }
 });
 
